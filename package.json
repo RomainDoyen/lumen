@@ -3,7 +3,7 @@
   "version": "2.1.0",
   "description": "Compression et conversion d'images en WebP",
   "main": "electron/main.js",
-  "homepage": "https://github.com/lumen-app/lumen",
+  "homepage": "https://github.com/RomainDoyen/lumen.git",
   "author": {
     "name": "Lumen",
     "email": "contact@app.lumen.imagestudio"
