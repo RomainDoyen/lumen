@@ -1,0 +1,63 @@
+{
+  "name": "lumen",
+  "version": "2.1.0",
+  "description": "Compression et conversion d'images en WebP",
+  "main": "electron/main.js",
+  "homepage": "https://github.com/lumen-app/lumen",
+  "author": {
+    "name": "Lumen",
+    "email": "contact@app.lumen.imagestudio"
+  },
+  "license": "UNLICENSED",
+  "scripts": {
+    "icons": "node scripts/export-icon.cjs",
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "app.lumen.imagestudio",
+    "productName": "Lumen",
+    "icon": "build/icon.png",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/**/*.js",
+      "build/icon.png",
+      "*.html",
+      "*.css",
+      "*.js",
+      "icons/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Graphics"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^34.0.0",
+    "electron-builder": "^25.1.8",
+    "sharp": "^0.34.5"
+  }
+}
