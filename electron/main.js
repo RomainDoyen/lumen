@@ -3,8 +3,13 @@ const path = require('path');
 const fs = require('fs');
 
 function getIconPath() {
-  const p = path.join(__dirname, '..', 'build', 'icon.png');
-  return fs.existsSync(p) ? p : undefined;
+  const buildDir = path.join(__dirname, '..', 'build');
+  if (process.platform === 'win32') {
+    const ico = path.join(buildDir, 'icon.ico');
+    if (fs.existsSync(ico)) return ico;
+  }
+  const png = path.join(buildDir, 'icon.png');
+  return fs.existsSync(png) ? png : undefined;
 }
 
 /** Menu macOS minimal (À propos, Édition, Fenêtre). Windows/Linux : barre masquée — le menu Electron par défaut n’apportait rien d’utile ici. */

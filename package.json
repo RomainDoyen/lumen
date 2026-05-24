@@ -19,6 +19,7 @@
     "appId": "app.lumen.imagestudio",
     "productName": "Lumen",
     "icon": "build/icon.png",
+    "buildResources": "build",
     "directories": {
       "output": "release"
     },
@@ -26,6 +27,7 @@
       "app/**/*",
       "electron/**/*.js",
       "build/icon.png",
+      "build/icon.ico",
       "index.html",
       "icon.html",
       "wordpress.html"
@@ -42,7 +44,7 @@
         "nsis",
         "portable"
       ],
-      "signAndEditExecutable": false
+      "icon": "build/icon.ico"
     },
     "linux": {
       "target": [
@@ -53,12 +55,15 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico"
     }
   },
   "devDependencies": {
     "electron": "^34.0.0",
     "electron-builder": "^25.1.8",
-    "sharp": "^0.34.5"
+    "sharp": "^0.34.5",
+    "to-ico": "^1.1.5"
   }
 }

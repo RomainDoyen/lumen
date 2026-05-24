@@ -154,7 +154,7 @@
 ├── electron/                  # main.js, preload.js
 ├── docs/                      # documentation HTML
 ├── scripts/                   # export-icon.cjs (Sharp)
-├── build/                     # icon.png (paquet Electron)
+├── build/                     # icon.png + icon.ico (paquet Electron)
 ├── package.json
 └── release/                   # builds (généré)</pre></div>
         <dl class="tech-def">
@@ -195,9 +195,12 @@
         <p>À la racine du projet :</p>
         <div class="cmd"><pre>cd lumen
 npm install</pre></div>
-        <h3>Icône du paquet</h3>
+        <h3>Icônes du paquet</h3>
         <div class="cmd"><pre>npm run icons</pre></div>
-        <p>Produit <code class="inline-code">build/icon.png</code> à partir du SVG Lumen (nécessaire avant une distribution propre).</p>
+        <p>
+          Produit <code class="inline-code">build/icon.png</code> (macOS / Linux) et <code class="inline-code">build/icon.ico</code> (Windows, multi-tailles 16–256 px) à partir du SVG Lumen.
+          <strong>Obligatoire avant <code class="inline-code">npm run dist</code></strong>, surtout sur Windows — sans <code class="inline-code">icon.ico</code>, l’exécutable affiche l’icône Electron par défaut.
+        </p>
       </section>
 
       <section id="utilisation-compression">
@@ -343,7 +346,7 @@ npm install</pre></div>
             </tr>
             <tr>
               <td><code class="inline-code">npm run icons</code></td>
-              <td>Génère <code class="inline-code">build/icon.png</code></td>
+              <td>Génère <code class="inline-code">build/icon.png</code> et <code class="inline-code">build/icon.ico</code></td>
             </tr>
             <tr>
               <td><code class="inline-code">npm start</code></td>
@@ -436,7 +439,8 @@ npm install</pre></div>
           <li><strong>Zone de dépôt inactive (icônes) :</strong> vérifier que <code class="inline-code">icon-script-protected.js</code> est bien présent et chargé sans erreur dans la console.</li>
           <li><strong>Pack WordPress — scripts :</strong> chemins <code class="inline-code">app/assets/js/wordpress/</code> référencés depuis <code class="inline-code">app/pages/wordpress.html</code>.</li>
           <li><strong>Page blanche après déplacement :</strong> utiliser <code class="inline-code">app/pages/</code> ou <code class="inline-code">npm start</code>, pas d’anciens chemins à la racine (sauf redirections).</li>
-          <li><strong>Icône manquante au build :</strong> <code class="inline-code">npm run icons</code> puis présence de <code class="inline-code">build/icon.png</code>.</li>
+          <li><strong>Icône Windows = logo Electron :</strong> exécuter <code class="inline-code">npm run icons</code>, vérifier <code class="inline-code">build/icon.ico</code>, puis reconstruire avec <code class="inline-code">npm run dist</code> sur Windows (ou CI Windows). Ne pas définir <code class="inline-code">signAndEditExecutable: false</code> (cela empêche d’injecter l’icône dans le .exe).</li>
+          <li><strong>Icône manquante au build :</strong> <code class="inline-code">npm run icons</code> puis présence de <code class="inline-code">build/icon.png</code> et <code class="inline-code">build/icon.ico</code>.</li>
           <li><strong>Web bloqué après déploiement :</strong> domaine non listé dans <code class="inline-code">AUTHORIZED_DOMAINS</code> ou HTTPS requis selon <code class="inline-code">license-protection.js</code>.</li>
           <li><strong>Canvas / export vide :</strong> formats non supportés ou image corrompue ; tester avec un PNG simple.</li>
           <li><strong>CORS ou fetch <code class="inline-code">config.env</code> :</strong> en ouvrant les fichiers en <code class="inline-code">file://</code>, le fetch peut échouer ; les défauts du loader s’appliquent.</li>

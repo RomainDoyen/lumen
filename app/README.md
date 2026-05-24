@@ -22,4 +22,6 @@ app/
 
 **Développement Electron :** `npm start` ouvre `app/pages/index.html`.
 
+**Icône Windows :** avant un build distribuable, lancer `npm run icons` à la racine du projet (génère `build/icon.ico`).
+
 **Config web :** copier `config/config.env.example` en `config/config.env`.
