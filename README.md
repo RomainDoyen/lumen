@@ -14,4 +14,6 @@
 
 - Ouvrez [`docs/index.html`](docs/index.html) dans un navigateur (redirection vers le guide complet), ou directement [`docs/build-guide.html`](docs/build-guide.html).
 
-Pour lancer l’app en développement une fois les dépendances installées : `npm start` (voir le guide pour le reste).
+Pour lancer l’app en développement une fois les dépendances installées : `npm start` (ouvre `app/pages/index.html` via Electron).
+
+**Structure :** le code UI est dans [`app/`](app/README.md) (`pages/`, `assets/`, `config/`).

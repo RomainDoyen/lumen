@@ -99,7 +99,7 @@ function createWindow() {
     return { action: 'deny' };
   });
 
-  win.loadFile(path.join(__dirname, '..', 'index.html'));
+  win.loadFile(path.join(__dirname, '..', 'app', 'pages', 'index.html'));
 }
 
 app.whenReady().then(() => {

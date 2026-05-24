@@ -23,12 +23,12 @@
       "output": "release"
     },
     "files": [
+      "app/**/*",
       "electron/**/*.js",
       "build/icon.png",
-      "*.html",
-      "*.css",
-      "*.js",
-      "icons/**/*"
+      "index.html",
+      "icon.html",
+      "wordpress.html"
     ],
     "mac": {
       "category": "public.app-category.utilities",

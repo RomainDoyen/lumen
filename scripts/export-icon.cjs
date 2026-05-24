@@ -5,7 +5,7 @@ const path = require('path');
 const sharp = require('sharp');
 
 const root = path.join(__dirname, '..');
-const svgPath = path.join(root, 'icons', 'lumen-mark.svg');
+const svgPath = path.join(root, 'app', 'assets', 'icons', 'lumen-mark.svg');
 const outDir = path.join(root, 'build');
 const outPng = path.join(outDir, 'icon.png');
 

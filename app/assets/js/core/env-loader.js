@@ -7,7 +7,7 @@ class EnvLoader {
     // Chargement de la configuration depuis config.env
     async loadConfig() {
         try {
-            const response = await fetch('./config.env');
+            const response = await fetch('../config/config.env');
             const text = await response.text();
             this.parseEnvFile(text);
         } catch (error) {

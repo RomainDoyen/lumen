@@ -88,7 +88,7 @@
             </tr>
             <tr>
               <td><strong>Lumen (navigateur)</strong></td>
-              <td>Ouvrir <code class="inline-code">index.html</code> ou déployer sur un hébergeur statique</td>
+              <td>Servir le dossier <code class="inline-code">app/</code> (entrée <code class="inline-code">app/pages/index.html</code>) ou déployer en statique</td>
               <td>Même interface que le bureau sans couche Electron ; protection licence / domaine selon <code class="inline-code">config.env</code> si déployé en ligne</td>
             </tr>
           </tbody>
@@ -137,38 +137,37 @@
       </section>
 
       <section id="structure-depot">
-        <h2>Structure du dépôt (principaux fichiers)</h2>
+        <h2>Structure du dépôt</h2>
+        <p>Le code applicatif est regroupé sous <code class="inline-code">app/</code>. Les fichiers <code class="inline-code">index.html</code>, <code class="inline-code">icon.html</code> et <code class="inline-code">wordpress.html</code> à la <strong>racine</strong> ne font que rediriger vers <code class="inline-code">app/pages/</code>.</p>
+        <div class="cmd"><pre>lumen/
+├── app/
+│   ├── pages/                 # index, wordpress, icon (.html)
+│   ├── assets/
+│   │   ├── css/               # styles, desktop, wordpress-pack
+│   │   ├── js/
+│   │   │   ├── core/          # env-loader, license-protection
+│   │   │   ├── compression/   # script-protected.js
+│   │   │   ├── icons/         # icon-script-protected.js
+│   │   │   └── wordpress/     # pack + brouillon IndexedDB
+│   │   └── icons/             # SVG Lumen
+│   └── config/                # config.env (web, optionnel)
+├── electron/                  # main.js, preload.js
+├── docs/                      # documentation HTML
+├── scripts/                   # export-icon.cjs (Sharp)
+├── build/                     # icon.png (paquet Electron)
+├── package.json
+└── release/                   # builds (généré)</pre></div>
         <dl class="tech-def">
-          <dt><code class="inline-code">index.html</code></dt>
-          <dd>Page principale compression + liens vers WordPress et icônes.</dd>
-          <dt><code class="inline-code">wordpress.html</code></dt>
-          <dd>Pack WordPress multi-images (interface + chargement des scripts dédiés).</dd>
-          <dt><code class="inline-code">wordpress-pack.js</code></dt>
-          <dd>Logique pack : tailles WP, WebP/JPEG, ZIP, Gutenberg, Mistral, brouillon.</dd>
-          <dt><code class="inline-code">wordpress-pack-draft.js</code></dt>
-          <dd>Persistance IndexedDB du brouillon (images + métadonnées).</dd>
-          <dt><code class="inline-code">wordpress-pack.css</code></dt>
-          <dd>Styles spécifiques au module WordPress.</dd>
-          <dt><code class="inline-code">icon.html</code></dt>
-          <dd>Générateur d’icônes multi-tailles.</dd>
-          <dt><code class="inline-code">styles.css</code> / <code class="inline-code">desktop.css</code></dt>
-          <dd>Styles web (clair) et surcharge desktop Lumen (chargée uniquement en Electron).</dd>
-          <dt><code class="inline-code">script-protected.js</code></dt>
-          <dd>Logique compression WebP (canvas, ZIP via JSZip).</dd>
-          <dt><code class="inline-code">icon-script-protected.js</code></dt>
-          <dd>Logique glisser-déposer, prévisualisation source et génération PNG.</dd>
-          <dt><code class="inline-code">electron/main.js</code> et <code class="inline-code">preload.js</code></dt>
-          <dd>Fenêtre, icône, menu macOS, exposition <code class="inline-code">lumenDesktop</code>.</dd>
-          <dt><code class="inline-code">env-loader.js</code> / <code class="inline-code">license-protection.js</code></dt>
-          <dd>Chargement optionnel <code class="inline-code">config.env</code> ; contrôles sur le déploiement web (non appliqués au mode desktop).</dd>
-          <dt><code class="inline-code">icons/</code></dt>
-          <dd>Logos et pictogrammes SVG Lumen.</dd>
-          <dt><code class="inline-code">build/icon.png</code></dt>
-          <dd>Icône paquet et fenêtre ; régénérée par <code class="inline-code">npm run icons</code>.</dd>
-          <dt><code class="inline-code">scripts/export-icon.cjs</code></dt>
-          <dd>Génération PNG depuis le SVG (Sharp).</dd>
-          <dt><code class="inline-code">release/</code></dt>
-          <dd>Sortie des builds electron-builder (non versionné par défaut).</dd>
+          <dt><code class="inline-code">app/pages/</code></dt>
+          <dd>Points d’entrée : compression, pack WordPress, icônes.</dd>
+          <dt><code class="inline-code">app/assets/js/core/</code></dt>
+          <dd>Configuration (<code class="inline-code">config.env</code>) et protection web.</dd>
+          <dt><code class="inline-code">app/config/config.env</code></dt>
+          <dd>Fichier optionnel (voir <code class="inline-code">config.env.example</code>).</dd>
+          <dt><code class="inline-code">electron/main.js</code></dt>
+          <dd>Charge <code class="inline-code">app/pages/index.html</code> au démarrage.</dd>
+          <dt><code class="inline-code">docs/build-guide.html</code></dt>
+          <dd>Ce guide.</dd>
         </dl>
       </section>
 
@@ -204,7 +203,7 @@ npm install</pre></div>
       <section id="utilisation-compression">
         <h2>Utilisation — Compression WebP</h2>
         <ol>
-          <li>Ouvre <code class="inline-code">index.html</code> ou lance Lumen puis reste sur <strong>Images</strong>.</li>
+          <li>Ouvre <code class="inline-code">app/pages/index.html</code> (ou lance Lumen) puis reste sur <strong>Images</strong>.</li>
           <li>Dépose des fichiers ou clique la zone / « parcourez vos fichiers » pour sélectionner PNG, JPEG ou AVIF.</li>
           <li>Choisis le format de cadrage (auto, carré, paysage, portrait), le niveau de compression et la qualité WebP.</li>
           <li>Clique sur <strong>Compresser et convertir en WebP</strong>.</li>
@@ -221,7 +220,7 @@ npm install</pre></div>
 
         <h3>Parcours type</h3>
         <ol>
-          <li>Ouvre <code class="inline-code">wordpress.html</code> ou l’onglet <strong>Pack WordPress</strong> dans Lumen.</li>
+          <li>Ouvre <code class="inline-code">app/pages/wordpress.html</code> ou l’onglet <strong>Pack WordPress</strong> dans Lumen.</li>
           <li>Glisse-dépose <strong>une ou plusieurs</strong> images (PNG, JPEG, AVIF, WebP) ou utilise <strong>+ Ajouter</strong> pour compléter le lot.</li>
           <li>Renseigne l’<strong>URL du site</strong> (optionnel) : utilisée dans les chemins des snippets ; sinon le placeholder <code class="inline-code">{{SITE_URL}}</code> est conservé.</li>
           <li>Pour chaque image, complète les <strong>métadonnées</strong> (slug, titre, 3 variantes d’alt, légende, description). Un préremplissage depuis le nom de fichier est proposé à l’import.</li>
@@ -287,7 +286,7 @@ npm install</pre></div>
       <section id="utilisation-icones">
         <h2>Utilisation — Générateur d’icônes</h2>
         <ol>
-          <li>Ouvre <code class="inline-code">icon.html</code> ou l’onglet <strong>Icônes app</strong> dans Lumen.</li>
+          <li>Ouvre <code class="inline-code">app/pages/icon.html</code> ou l’onglet <strong>Icônes app</strong> dans Lumen.</li>
           <li>Importe une image PNG, JPEG ou SVG (glisser-déposer ou parcourir).</li>
           <li>Vérifie la prévisualisation source puis <strong>Générer toutes les icônes</strong>.</li>
           <li>Télécharge chaque taille ou l’archive ZIP regroupant les PNG 16×16 à 512×512.</li>
@@ -435,7 +434,8 @@ npm install</pre></div>
           <li><strong>Mistral — clé invalide :</strong> message « Clé API Mistral invalide » ; régénérer une clé sur la console Mistral.</li>
           <li><strong>Mistral — limite :</strong> compléter les métadonnées à la main ; réessayer plus tard ou sur une image isolée via le bouton <strong>Mistral</strong> de la carte.</li>
           <li><strong>Zone de dépôt inactive (icônes) :</strong> vérifier que <code class="inline-code">icon-script-protected.js</code> est bien présent et chargé sans erreur dans la console.</li>
-          <li><strong>Pack WordPress — scripts :</strong> présence de <code class="inline-code">wordpress-pack-draft.js</code> et <code class="inline-code">wordpress-pack.js</code> chargés après JSZip dans <code class="inline-code">wordpress.html</code>.</li>
+          <li><strong>Pack WordPress — scripts :</strong> chemins <code class="inline-code">app/assets/js/wordpress/</code> référencés depuis <code class="inline-code">app/pages/wordpress.html</code>.</li>
+          <li><strong>Page blanche après déplacement :</strong> utiliser <code class="inline-code">app/pages/</code> ou <code class="inline-code">npm start</code>, pas d’anciens chemins à la racine (sauf redirections).</li>
           <li><strong>Icône manquante au build :</strong> <code class="inline-code">npm run icons</code> puis présence de <code class="inline-code">build/icon.png</code>.</li>
           <li><strong>Web bloqué après déploiement :</strong> domaine non listé dans <code class="inline-code">AUTHORIZED_DOMAINS</code> ou HTTPS requis selon <code class="inline-code">license-protection.js</code>.</li>
           <li><strong>Canvas / export vide :</strong> formats non supportés ou image corrompue ; tester avec un PNG simple.</li>

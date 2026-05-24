@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (function () {
+      if (typeof window !== 'undefined' && window.lumenDesktop && window.lumenDesktop.isDesktop) {
+        document.documentElement.classList.add('cc-desktop');
+      }
+    })();
+    </script>
+    <title>Lumen — Compression WebP &amp; conversion d'images</title>
+    <meta name="description" content="Compressez vos images PNG, JPEG et AVIF vers WebP. Formats multiples, export ZIP. Traitement local dans le navigateur ou l'application Lumen.">
+    <meta name="keywords" content="compression image, webp, png, jpeg, avif, lumen, conversion locale">
+    <meta name="author" content="Lumen">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="theme-color" content="#f1f5f9">
+    <meta name="application-name" content="Lumen">
+    <meta name="apple-mobile-web-app-title" content="Lumen">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileColor" content="#2563eb">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Lumen — Compression WebP">
+    <meta property="og:description" content="Compressez vos images PNG, JPEG et AVIF vers WebP. Export ZIP. Traitement local.">
+    <meta property="og:site_name" content="Lumen">
+    <meta property="og:locale" content="fr_FR">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Lumen — Compression WebP">
+    <meta name="twitter:description" content="Compressez vos images vers WebP. Traitement local.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Google tag (gtag.js) — désactivé en application Electron -->
+    <script>
+      (function () {
+        if (typeof window !== 'undefined' && window.lumenDesktop && window.lumenDesktop.isDesktop) return;
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        window.gtag = gtag;
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-7HBGMGTXZD';
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', 'G-7HBGMGTXZD');
+      })();
+    </script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <script>
+    (function () {
+      if (!window.lumenDesktop || !window.lumenDesktop.isDesktop) return;
+      var h = document.head;
+      var f = document.createElement('link');
+      f.rel = 'stylesheet';
+      f.href = 'https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap';
+      h.appendChild(f);
+      var d = document.createElement('link');
+      d.rel = 'stylesheet';
+      d.href = '../assets/css/desktop.css';
+      h.appendChild(d);
+    })();
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-page="compression">
+    <div class="app-shell">
+        <aside class="desktop-rail" aria-label="Navigation Lumen">
+            <div class="desktop-rail__brand">
+                <img src="../assets/icons/lumen-mark.svg" alt="" class="rail-logo-mark" width="42" height="42">
+                <div class="rail-text">
+                    <span class="rail-name">Lumen</span>
+                    <span class="rail-tagline">Studio image local</span>
+                </div>
+            </div>
+            <nav class="rail-nav">
+                <a href="index.html" class="rail-link rail-link--active">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    Images
+                </a>
+                <a href="wordpress.html" class="rail-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                    Pack WordPress
+                </a>
+                <a href="icon.html" class="rail-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                    Icônes app
+                </a>
+            </nav>
+            <div class="rail-foot">
+                Lumen · aucun envoi réseau<br>
+                Export WebP &amp; ZIP sur votre machine.
+            </div>
+        </aside>
+        <div class="app-stage">
+            <header class="desktop-stage-head">
+                <p class="desktop-stage-head__label">Workspace</p>
+                <h2 class="desktop-stage-head__title">Compression WebP</h2>
+                <p class="desktop-stage-head__desc">Importez des PNG, JPEG ou AVIF, ajustez le profil et récupérez des fichiers légers — tout reste sur cet ordinateur.</p>
+            </header>
+            <div class="container">
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-content">
+                <a href="index.html" class="nav-logo">
+                    <img src="../assets/icons/icon-svg.svg" alt="" class="nav-icon">
+                    Lumen
+                </a>
+                <div class="nav-links">
+                    <a href="index.html" class="nav-link active">Compression</a>
+                    <a href="wordpress.html" class="nav-link">WordPress</a>
+                    <a href="icon.html" class="nav-link">Icônes</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- En-tête de l'application -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">
+                    <img src="../assets/icons/icon-svg.svg" alt="" class="icon">
+                    Lumen
+                </h1>
+                <p class="subtitle">Compressez et convertissez vos images PNG/JPEG vers WebP</p>
+            </div>
+        </header>
+
+        <!-- Zone de dépôt des fichiers -->
+        <main class="main-content">
+            <div class="upload-section">
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-zone-content">
+                        <div class="upload-icon ui-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.75"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg></div>
+                        <h3>Glissez-déposez vos images ici</h3>
+                        <p>ou <span class="browse-link" id="browseLink">parcourez vos fichiers</span></p>
+                        <div class="supported-formats">
+                            <span class="format-tag">PNG</span>
+                            <span class="format-tag">JPEG</span>
+                            <span class="format-tag">JPG</span>
+                            <span class="format-tag">AVIF</span>
+                        </div>
+                    </div>
+                    <input type="file" id="fileInput" accept="image/png,image/jpeg,image/jpg,image/avif" multiple hidden>
+                </div>
+            </div>
+
+            <!-- Images uploadées avec vignettes -->
+            <div class="uploaded-images-section" id="uploadedImagesSection" style="display: none;">
+                <div class="uploaded-images-header">
+                    <h3 class="section-title">Images sélectionnées</h3>
+                    <div class="uploaded-images-controls">
+                        <button type="button" class="refresh-btn" id="refreshBtn">
+                            <span class="btn-icon ui-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></span>
+                            Recommencer
+                        </button>
+                    </div>
+                </div>
+                <div class="uploaded-images-grid" id="uploadedImagesGrid">
+                    <!-- Les vignettes seront ajoutées dynamiquement -->
+                </div>
+                
+                <!-- Options de format -->
+                <div class="format-options">
+                    <h4 class="options-title">Options de format</h4>
+                    <div class="format-choices">
+                        <label class="format-choice">
+                            <input type="radio" name="format" value="auto" checked>
+                            <span class="format-radio"></span>
+                            <div class="format-info">
+                                <div class="format-name">Format automatique</div>
+                                <div class="format-desc">Conserve les proportions originales</div>
+                            </div>
+                        </label>
+                        <label class="format-choice">
+                            <input type="radio" name="format" value="square">
+                            <span class="format-radio"></span>
+                            <div class="format-info">
+                                <div class="format-name">Format carré</div>
+                                <div class="format-desc">Redimensionne en carré (crop centré)</div>
+                            </div>
+                        </label>
+                        <label class="format-choice">
+                            <input type="radio" name="format" value="landscape">
+                            <span class="format-radio"></span>
+                            <div class="format-info">
+                                <div class="format-name">Format paysage</div>
+                                <div class="format-desc">Redimensionne en 16:9 (crop centré)</div>
+                            </div>
+                        </label>
+                        <label class="format-choice">
+                            <input type="radio" name="format" value="portrait">
+                            <span class="format-radio"></span>
+                            <div class="format-info">
+                                <div class="format-name">Format portrait</div>
+                                <div class="format-desc">Redimensionne en 9:16 (crop centré)</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Paramètres avancés -->
+                <div class="processing-options">
+                    <h4 class="options-title">Paramètres de compression</h4>
+                    <div class="control-group">
+                        <label for="compressionLevel" class="control-label">
+                            Niveau de compression
+                            <span class="quality-value" id="compressionLevelValue">Équilibré</span>
+                        </label>
+                        <input type="range" id="compressionLevel" class="slider" min="1" max="5" value="3" step="1">
+                        <div class="slider-labels">
+                            <span>Qualité max</span>
+                            <span>Équilibre</span>
+                            <span>Taille min</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="qualitySlider" class="control-label">
+                            Qualité WebP
+                            <span class="quality-value" id="qualityValue">80%</span>
+                        </label>
+                        <input type="range" id="qualitySlider" class="slider" min="50" max="100" value="80" step="1">
+                        <div class="slider-labels">
+                            <span>50%</span>
+                            <span>100%</span>
+                        </div>
+                        <p class="help-text">Ajustez entre fidélité visuelle et réduction de taille.</p>
+                    </div>
+                </div>
+                
+                <button type="button" class="process-btn" id="processBtn">
+                    <span class="btn-icon ui-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></span>
+                    Compresser et convertir en WebP
+                </button>
+            </div>
+
+            <!-- Zone de prévisualisation -->
+            <div class="preview-section" id="previewSection" style="display: none;">
+                <h3 class="section-title">Prévisualisation</h3>
+                <div class="preview-grid" id="previewGrid">
+                    <!-- Les prévisualisations seront ajoutées dynamiquement -->
+                </div>
+            </div>
+
+            <!-- Zone de téléchargement -->
+            <div class="download-section" id="downloadSection" style="display: none;">
+                <div class="download-header">
+                    <h3 class="section-title">Images traitées</h3>
+                    <div class="download-buttons">
+                        <button type="button" class="download-zip-btn" id="downloadZipBtn">
+                            <span class="btn-icon ui-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></span>
+                            Télécharger ZIP
+                        </button>
+                        <button type="button" class="download-all-btn" id="downloadAllBtn">
+                            <span class="btn-icon ui-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg></span>
+                            Télécharger tout
+                        </button>
+                    </div>
+                </div>
+                <div class="download-grid" id="downloadGrid">
+                    <!-- Les boutons de téléchargement seront ajoutés dynamiquement -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Statistiques -->
+        <div class="stats-section" id="statsSection" style="display: none;">
+            <div class="stat-card">
+                <div class="stat-icon ui-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
+                <div class="stat-content">
+                    <div class="stat-value" id="totalImages">0</div>
+                    <div class="stat-label">Images traitées</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon ui-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg></div>
+                <div class="stat-content">
+                    <div class="stat-value" id="totalSavings">0%</div>
+                    <div class="stat-label">Économie d'espace</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon ui-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+                <div class="stat-content">
+                    <div class="stat-value" id="avgCompression">0%</div>
+                    <div class="stat-label">Compression moyenne</div>
+                </div>
+            </div>
+        </div>
+            </div>
+
+            <footer class="footer">
+                <div class="footer-content">
+                    <p class="footer-copyright">
+                        © 2025 Lumen
+                    </p>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Indicateur de chargement -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Traitement en cours...</p>
+    </div>
+
+    <!-- Notifications -->
+    <div class="notification" id="notification" style="display: none;">
+        <span class="notification-icon" id="notificationIcon">✅</span>
+        <span class="notification-text" id="notificationText"></span>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="../assets/js/core/env-loader.js"></script>
+    <script src="../assets/js/core/license-protection.js"></script>
+    <script src="../assets/js/compression/script-protected.js"></script>
+</body>
+</html>
