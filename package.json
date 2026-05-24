@@ -13,15 +13,16 @@
     "icons": "node scripts/export-icon.cjs",
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "npm run icons && electron-builder"
   },
   "build": {
     "appId": "app.lumen.imagestudio",
     "productName": "Lumen",
     "icon": "build/icon.png",
-    "buildResources": "build",
+    "afterPack": "scripts/after-pack-icon.cjs",
     "directories": {
-      "output": "release"
+      "output": "release",
+      "buildResources": "build"
     },
     "files": [
       "app/**/*",
@@ -44,7 +45,8 @@
         "nsis",
         "portable"
       ],
-      "icon": "build/icon.ico"
+      "icon": "build/icon.ico",
+      "signAndEditExecutable": false
     },
     "linux": {
       "target": [
@@ -63,6 +65,7 @@
   "devDependencies": {
     "electron": "^34.0.0",
     "electron-builder": "^25.1.8",
+    "rcedit": "^4.0.1",
     "sharp": "^0.34.5",
     "to-ico": "^1.1.5"
   }
