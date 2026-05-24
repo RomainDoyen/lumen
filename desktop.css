@@ -236,6 +236,12 @@ html.cc-desktop .process-btn:hover {
     box-shadow: 0 12px 40px rgba(232, 121, 249, 0.4);
 }
 
+html.cc-desktop .refresh-btn:hover {
+    background: var(--surface-elevated);
+    border-color: var(--border-hover);
+    color: var(--text-primary);
+}
+
 html.cc-desktop .download-zip-btn {
     background: linear-gradient(135deg, #c026d3 0%, #e879f9 100%);
     color: #fafafa;

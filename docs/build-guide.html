@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Documentation — Lumen</title>
-  <meta name="description" content="Guide complet : présentation, utilisation, configuration, architecture et compilation de Lumen (Electron et navigateur).">
+  <meta name="description" content="Guide complet Lumen : compression WebP, pack WordPress multi-images, icônes, Mistral, brouillon IndexedDB, Electron et navigateur.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -32,6 +32,7 @@
         <a href="#prerequis">Prérequis</a>
         <a href="#installation">Installation</a>
         <a href="#utilisation-compression">Compression WebP</a>
+        <a href="#utilisation-wordpress">Pack WordPress</a>
         <a href="#utilisation-icones">Générateur d'icônes</a>
         <a href="#configuration">Configuration</a>
 
@@ -55,14 +56,14 @@
       <header class="hero">
         <h1>Documentation du projet</h1>
         <p class="hero-lead">
-          <strong>Lumen</strong> est une application de compression d’images et de génération de packs d’icônes. Elle s’utilise en <strong>application Electron</strong> ou en ouvrant les pages dans un <strong>navigateur</strong> ; le traitement reste <strong>local</strong> sur la machine de l’utilisateur.
+          <strong>Lumen</strong> est une application de compression d’images, de préparation de <strong>packs WordPress</strong> (tailles natives, WebP + JPEG, métadonnées) et de génération de packs d’icônes. Elle s’utilise en <strong>application Electron</strong> ou en ouvrant les pages dans un <strong>navigateur</strong> ; le traitement image reste <strong>local</strong> sur la machine de l’utilisateur.
         </p>
       </header>
 
       <section id="presentation">
         <h2>Présentation</h2>
         <p>
-          L’outil permet de réduire la taille de fichiers image (PNG, JPEG, AVIF vers WebP pour la compression ; PNG, JPEG, SVG pour le kit d’icônes), d’ajuster le recadrage ou la qualité, puis d’exporter les résultats ou une archive ZIP. Aucune donnée n’est envoyée vers un serveur applicatif : tout s’exécute dans le navigateur embarqué (Electron) ou dans votre navigateur web habituel.
+          L’outil permet de réduire la taille de fichiers image (PNG, JPEG, AVIF vers WebP), de produire un <strong>ZIP prêt pour WordPress</strong> (plusieurs images, dossier par slug, <code class="inline-code">metadata.json</code>, blocs Gutenberg) et de générer des kits d’icônes PNG. Le rendu et l’export d’images s’exécutent dans le navigateur embarqué (Electron) ou dans votre navigateur ; seule la suggestion de textes via <strong>Mistral</strong> (optionnelle) envoie une miniature vers l’API Mistral avec votre propre clé.
         </p>
         <div class="callout">
           En <strong>bureau</strong>, Electron charge des styles dédiés et contourne la protection par domaine. En <strong>navigateur</strong>, les mêmes pages HTML peuvent être servies en statique ; la licence et <code class="inline-code">config.env</code> s’appliquent selon ton déploiement.
@@ -110,6 +111,14 @@
             <p>Téléchargement fichier par fichier, tout télécharger, ou archive ZIP avec fichier README de rapport.</p>
           </div>
           <div class="feature-card">
+            <h4>Pack WordPress</h4>
+            <p>Plusieurs images → 10 fichiers chacune (5 tailles × WebP + JPEG), <code class="inline-code">metadata.json</code> avec <code class="inline-code">media[]</code>, snippets <code class="inline-code">&lt;picture&gt;</code> par slug (<code class="inline-code">wordpress.html</code>).</p>
+          </div>
+          <div class="feature-card">
+            <h4>Métadonnées &amp; Mistral</h4>
+            <p>Saisie manuelle ou suggestion IA (clé utilisateur). Limite API : message affiché, saisie toujours possible. Brouillon auto (IndexedDB).</p>
+          </div>
+          <div class="feature-card">
             <h4>Kit d’icônes</h4>
             <p>À partir d’une image source : PNG aux tailles 16 à 512 px, téléchargement unitaire ou ZIP (<code class="inline-code">icon.html</code>).</p>
           </div>
@@ -120,6 +129,8 @@
         <h2>Confidentialité et sécurité</h2>
         <ul>
           <li>Les images sont lues en mémoire dans le navigateur ; elles ne sont pas téléchargées vers nos serveurs applicatifs pour traitement.</li>
+          <li><strong>Pack WordPress :</strong> les fichiers du pack (redimensionnement, WebP, JPEG) restent locaux. Si tu actives Mistral, seule une <strong>miniature JPEG (max. 1024 px)</strong> par image est envoyée à <code class="inline-code">api.mistral.ai</code> avec <strong>ta clé</strong> (stockée dans le navigateur, jamais chez Lumen).</li>
+          <li>Le <strong>brouillon</strong> du pack WordPress est enregistré dans <strong>IndexedDB</strong> sur ta machine (reprise après changement d’onglet Lumen ou rechargement de la page).</li>
           <li>Sur le <strong>site web</strong>, des scripts tiers peuvent être présents selon la configuration (par ex. mesure d’audience) ; ils sont <strong>désactivés</strong> dans l’app Electron Lumen.</li>
           <li>La communication réseau hors navigateur (mises à jour Electron, polices Google si chargées) dépend de votre environnement.</li>
         </ul>
@@ -129,7 +140,15 @@
         <h2>Structure du dépôt (principaux fichiers)</h2>
         <dl class="tech-def">
           <dt><code class="inline-code">index.html</code></dt>
-          <dd>Page principale compression + lien vers icônes.</dd>
+          <dd>Page principale compression + liens vers WordPress et icônes.</dd>
+          <dt><code class="inline-code">wordpress.html</code></dt>
+          <dd>Pack WordPress multi-images (interface + chargement des scripts dédiés).</dd>
+          <dt><code class="inline-code">wordpress-pack.js</code></dt>
+          <dd>Logique pack : tailles WP, WebP/JPEG, ZIP, Gutenberg, Mistral, brouillon.</dd>
+          <dt><code class="inline-code">wordpress-pack-draft.js</code></dt>
+          <dd>Persistance IndexedDB du brouillon (images + métadonnées).</dd>
+          <dt><code class="inline-code">wordpress-pack.css</code></dt>
+          <dd>Styles spécifiques au module WordPress.</dd>
           <dt><code class="inline-code">icon.html</code></dt>
           <dd>Générateur d’icônes multi-tailles.</dd>
           <dt><code class="inline-code">styles.css</code> / <code class="inline-code">desktop.css</code></dt>
@@ -194,6 +213,77 @@ npm install</pre></div>
         </ol>
       </section>
 
+      <section id="utilisation-wordpress">
+        <h2>Utilisation — Pack WordPress</h2>
+        <p>
+          Module pensé pour gagner du temps sur un site WordPress : une ou plusieurs images sources produisent un <strong>ZIP unique</strong> avec tout le nécessaire pour l’import média et le collage Gutenberg.
+        </p>
+
+        <h3>Parcours type</h3>
+        <ol>
+          <li>Ouvre <code class="inline-code">wordpress.html</code> ou l’onglet <strong>Pack WordPress</strong> dans Lumen.</li>
+          <li>Glisse-dépose <strong>une ou plusieurs</strong> images (PNG, JPEG, AVIF, WebP) ou utilise <strong>+ Ajouter</strong> pour compléter le lot.</li>
+          <li>Renseigne l’<strong>URL du site</strong> (optionnel) : utilisée dans les chemins des snippets ; sinon le placeholder <code class="inline-code">{{SITE_URL}}</code> est conservé.</li>
+          <li>Pour chaque image, complète les <strong>métadonnées</strong> (slug, titre, 3 variantes d’alt, légende, description). Un préremplissage depuis le nom de fichier est proposé à l’import.</li>
+          <li><em>Optionnel —</em> Saisis ta <strong>clé API Mistral</strong> (conservée en <code class="inline-code">localStorage</code> sur ce navigateur) puis <strong>Suggérer toutes les images avec Mistral</strong> ou le bouton <strong>Mistral</strong> sur une carte. Vérifie toujours les textes avant export.</li>
+          <li>Clique sur <strong>Générer le pack WordPress (ZIP)</strong>, puis <strong>Télécharger le ZIP</strong>.</li>
+        </ol>
+
+        <h3>Contenu du ZIP</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Élément</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code class="inline-code">{slug}/</code></td>
+              <td>10 fichiers par image : original, large (1024), medium_large (768), medium (300), thumbnail (150) — chacun en <strong>.webp</strong> et <strong>.jpg</strong>. EXIF retirés au ré-encodage. La miniature WP est recadrée en carré centré.</td>
+            </tr>
+            <tr>
+              <td><code class="inline-code">metadata.json</code></td>
+              <td>Tableau <code class="inline-code">media[]</code> : champs REST (<code class="inline-code">alt_text</code>, <code class="inline-code">caption</code>, etc.), liste des fichiers, JSON-LD, référence Gutenberg.</td>
+            </tr>
+            <tr>
+              <td><code class="inline-code">gutenberg/{slug}.html</code></td>
+              <td>Bloc <code class="inline-code">&lt;!-- wp:html --&gt;</code> avec balise <code class="inline-code">&lt;picture&gt;</code> (srcset WebP + fallback JPEG).</td>
+            </tr>
+            <tr>
+              <td><code class="inline-code">README.txt</code></td>
+              <td>Rappel de la structure et des étapes d’import.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Brouillon automatique</h3>
+        <p>
+          Tant que tu n’as pas cliqué sur <strong>Tout effacer</strong>, le travail en cours (images + métadonnées + URL du site) est sauvegardé dans <strong>IndexedDB</strong>. En revenant sur Pack WordPress après un autre onglet Lumen (Images, Icônes) ou un rechargement, un message <em>Brouillon restauré</em> réaffiche le lot.
+        </p>
+
+        <h3>Mistral — limites et saisie manuelle</h3>
+        <ul>
+          <li>Modèle vision utilisé : <code class="inline-code">ministral-14b-latest</code> (appel direct depuis le navigateur).</li>
+          <li>Si la <strong>limite API</strong> est atteinte (HTTP 429 ou message équivalent), une bannière s’affiche : tu peux continuer à <strong>taper ou corriger</strong> tous les champs à la main.</li>
+          <li>Lors d’une suggestion sur plusieurs images, les images déjà traitées conservent leurs textes ; le reste reste en saisie manuelle.</li>
+        </ul>
+
+        <h3>Import sur WordPress</h3>
+        <p>
+          L’upload REST automatique depuis Lumen n’est pas intégré (CORS, authentification). Workflow recommandé :
+        </p>
+        <ol>
+          <li>Importer les fichiers via <strong>Médias</strong> ou FTP dans <code class="inline-code">wp-content/uploads/</code> (structure libre ; les chemins du ZIP suivent <code class="inline-code">lumen/{slug}/</code> si tu respectes l’URL renseignée).</li>
+          <li>Coller le HTML depuis <code class="inline-code">gutenberg/{slug}.html</code> dans un bloc <strong>HTML personnalisé</strong>.</li>
+          <li>Mettre à jour <code class="inline-code">alt_text</code>, légende et description via l’admin ou <code class="inline-code">PATCH /wp/v2/media/{id}</code> en t’aidant de <code class="inline-code">metadata.json</code>.</li>
+        </ol>
+
+        <div class="callout callout-warn">
+          <strong>Slug unique :</strong> si deux fichiers produisent le même slug, Lumen ajoute un suffixe (<code class="inline-code">-2</code>, <code class="inline-code">-3</code>…). Pense à les renommer avant export si tu veux des noms précis.
+        </div>
+      </section>
+
       <section id="utilisation-icones">
         <h2>Utilisation — Générateur d’icônes</h2>
         <ol>
@@ -229,6 +319,8 @@ npm install</pre></div>
           <dd><strong>Canvas</strong> du navigateur pour redimensionnement, recadrage centré et export WebP ou PNG.</dd>
           <dt>Archives ZIP</dt>
           <dd>Bibliothèque <strong>JSZip</strong> chargée depuis un CDN dans les pages HTML.</dd>
+          <dt>Pack WordPress</dt>
+          <dd>Canvas pour 5 tailles × 2 formats ; <code class="inline-code">wordpress-pack-draft.js</code> (IndexedDB) ; appels optionnels <code class="inline-code">fetch</code> vers l’API Mistral avec clé utilisateur.</dd>
           <dt>Electron</dt>
           <dd><code class="inline-code">contextIsolation</code> et <code class="inline-code">preload</code> exposent uniquement <code class="inline-code">lumenDesktop.isDesktop</code>. Pas d’accès Node dans les pages.</dd>
           <dt>Liens externes</dt>
@@ -339,7 +431,11 @@ npm install</pre></div>
       <section id="depannage">
         <h2>Dépannage</h2>
         <ul>
+          <li><strong>Brouillon WordPress perdu :</strong> vérifier qu’IndexedDB n’est pas vidé (navigation privée, effacement des données du site). <strong>Tout effacer</strong> supprime volontairement le brouillon.</li>
+          <li><strong>Mistral — clé invalide :</strong> message « Clé API Mistral invalide » ; régénérer une clé sur la console Mistral.</li>
+          <li><strong>Mistral — limite :</strong> compléter les métadonnées à la main ; réessayer plus tard ou sur une image isolée via le bouton <strong>Mistral</strong> de la carte.</li>
           <li><strong>Zone de dépôt inactive (icônes) :</strong> vérifier que <code class="inline-code">icon-script-protected.js</code> est bien présent et chargé sans erreur dans la console.</li>
+          <li><strong>Pack WordPress — scripts :</strong> présence de <code class="inline-code">wordpress-pack-draft.js</code> et <code class="inline-code">wordpress-pack.js</code> chargés après JSZip dans <code class="inline-code">wordpress.html</code>.</li>
           <li><strong>Icône manquante au build :</strong> <code class="inline-code">npm run icons</code> puis présence de <code class="inline-code">build/icon.png</code>.</li>
           <li><strong>Web bloqué après déploiement :</strong> domaine non listé dans <code class="inline-code">AUTHORIZED_DOMAINS</code> ou HTTPS requis selon <code class="inline-code">license-protection.js</code>.</li>
           <li><strong>Canvas / export vide :</strong> formats non supportés ou image corrompue ; tester avec un PNG simple.</li>
@@ -360,7 +456,7 @@ npm install</pre></div>
       </section>
 
       <footer class="footer-doc">
-        Documentation Lumen · À jour avec la structure habituelle du dépôt <code class="inline-code">lumen</code>.
+        Documentation Lumen · Compression WebP, pack WordPress, icônes · dépôt <code class="inline-code">lumen</code>.
       </footer>
     </main>
   </div>

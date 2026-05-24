@@ -4,7 +4,7 @@
 
 # Lumen
 
-**Lumen** est une application de **compression d’images** et de **conversion vers WebP**, avec un **générateur de packs d’icônes**. Le traitement reste **local** sur votre machine (Electron ou navigateur).
+**Lumen** est une application de **compression d’images** (WebP), de **packs WordPress** (plusieurs images → ZIP, `metadata.json`, Gutenberg) et de **générateur de packs d’icônes**. Le traitement image reste **local** ; la suggestion de métadonnées via **Mistral** est optionnelle (votre clé API).
 
 ---
 
